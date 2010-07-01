@@ -27,7 +27,10 @@ class Value(object):
 
     def __cmp__(self, other):
         # This is needed because bisect does not take a comparison function.
-        return cmp(self.creation_counter, other.creation_counter)
+        try:
+            return cmp(self.creation_counter, other.creation_counter)
+        except AttributeError:
+            return cmp(self.creation_counter, other)
 
     def copy(self):
         new_value = self.__class__(self.description, self.help_text)
