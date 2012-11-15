@@ -1,7 +1,6 @@
 from bisect import bisect
 
 from django.utils.datastructures import SortedDict
-from django.db import transaction
 from django.core.cache import cache
 
 from dbsettings.models import Setting
@@ -14,9 +13,6 @@ class SettingDict(SortedDict):
 
     def __iter__(self):
         return self.itervalues()
-
-    def __contains__(self, value):
-        return value in self.values()
 
 _settings = SettingDict()
 
@@ -43,10 +39,12 @@ def get_setting_storage(module_name, class_name, attribute_name):
                 attribute_name=attribute_name,
             )
         except Setting.DoesNotExist:
+            setting_object = get_setting(module_name, class_name, attribute_name)
             storage = Setting(
                 module_name=module_name,
                 class_name=class_name,
                 attribute_name=attribute_name,
+                value=setting_object.default,
             )
         cache.set(key, storage)
     return storage
