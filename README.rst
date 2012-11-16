@@ -72,6 +72,9 @@ causing your application to ignore the new changes.
 No other backends exhibit this behavior, but since ``simple`` is the default,
 make sure to specify a proper backend when moving to a production environment.
 
+To disable the cache feature, set ``DBSETTINGS_NO_CACHE = True`` in your
+``settings.py`` file.
+
 .. _`cache framework`: http://www.djangoproject.com/documentation/cache/
 
 Usage

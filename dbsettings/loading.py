@@ -2,6 +2,7 @@ from bisect import bisect
 
 from django.utils.datastructures import SortedDict
 from django.core.cache import cache
+from django.conf import settings
 
 from dbsettings.models import Setting
 
@@ -30,7 +31,12 @@ def get_setting(module_name, class_name, attribute_name):
 
 def get_setting_storage(module_name, class_name, attribute_name):
     key = _get_cache_key(module_name, class_name, attribute_name)
-    storage = cache.get(key)
+    
+    if settings.get('DBSETTINGS_NO_CACHE', False):
+        storage = None
+    else:
+        storage = cache.get(key)
+
     if storage is None:
         try:
             storage = Setting.objects.get(
