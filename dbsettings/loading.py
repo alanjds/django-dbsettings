@@ -32,7 +32,7 @@ def get_setting(module_name, class_name, attribute_name):
 def get_setting_storage(module_name, class_name, attribute_name):
     key = _get_cache_key(module_name, class_name, attribute_name)
     
-    if settings.get('DBSETTINGS_NO_CACHE', False):
+    if getattr(settings, 'DBSETTINGS_NO_CACHE', False):
         storage = None
     else:
         storage = cache.get(key)
